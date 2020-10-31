@@ -10,7 +10,8 @@
 .contactForm {
   display: flex;
   flex-direction: column;
-  border: 1px black solid;
+  border: 1px #3ab3c0 solid;
+  border-radius: 3px;
   width: 450px;
 }
 .contactAddButton {
@@ -38,7 +39,7 @@
   width: 450px;
   display: flex;
   justify-content: space-between;
-  border: 1px black solid;
+  border: 1px #3ab3c0 solid;
   border-radius: 5px;
   margin-bottom: 10px;
 }
@@ -51,4 +52,12 @@
   height: 25px;
   border-radius: 4px;
   background-color: red;
+}
+.navButton {
+  color: white;
+  text-decoration: none;
+  margin: 10px;
+}
+.navButton:hover {
+  background-color: tomato;
 }

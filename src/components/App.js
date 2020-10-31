@@ -1,32 +1,38 @@
-import React, { Component } from 'react';
-
-import Layout from './Layout';
-import ContactList from './ContactsList';
-import ContactForm from './ContactForm';
-import Filter from './ContactFilter';
-import contactOperations from '../redux/contacts/contactOperations';
+import React, { Component, Suspense } from 'react';
+import { BrowserRouter, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
+import PrivateRoute from './PrivateRoute';
+import PublicRoute from './PublicRoute';
+import AppLayout from './AppLayout';
+import routes from '../routes';
+import authOperations from '../redux/auth/authOperations';
 
 class App extends Component {
   componentDidMount() {
-    this.props.onFetchContacts();
+    this.props.onGetCurrentUser();
   }
 
   render() {
     return (
-      <>
-        <Layout title={'Phonebook'}>
-          <ContactForm />
-        </Layout>
-        <Layout title={'Contacts'}>
-          <Filter />
-          <ContactList />
-        </Layout>
-      </>
+      <BrowserRouter>
+        <AppLayout>
+          <Suspense fallback={<h1>Loading...</h1>}>
+            <Switch>
+              {routes.map(route =>
+                route.private ? (
+                  <PrivateRoute key={route.label} {...route} />
+                ) : (
+                  <PublicRoute key={route.label} {...route} />
+                ),
+              )}
+            </Switch>
+          </Suspense>
+        </AppLayout>
+      </BrowserRouter>
     );
   }
 }
 
-const mapDispatchToProps = { onFetchContacts: contactOperations.fetchContact };
-
-export default connect(null, mapDispatchToProps)(App);
+export default connect(null, {
+  onGetCurrentUser: authOperations.getCurrentUser,
+})(App);
